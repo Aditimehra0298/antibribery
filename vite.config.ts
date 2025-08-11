@@ -18,10 +18,14 @@ export default defineConfig({
         },
       },
     },
-    copyPublicDir: false,
+    copyPublicDir: true,
   },
   server: {
     port: 5173,
     host: true,
+  },
+  // Handle media files for different environments
+  define: {
+    __IS_DEVELOPMENT__: JSON.stringify(process.env.NODE_ENV === 'development'),
   },
 });
