@@ -32,38 +32,74 @@ const Hero = () => {
     
     checkVideoAccessibility();
     
-    const video = document.createElement('video');
-    video.muted = true;
-    video.preload = 'metadata';
-    
-    // Try multiple video sources
-    const videoSources = [
-      '/198896-909564547.mp4',
-      '/anti-bribery-compliance-video.mp4'
-    ];
-    
-    let currentSourceIndex = 0;
-    
-    const tryNextSource = () => {
-      if (currentSourceIndex < videoSources.length) {
-        console.log(`Trying video source: ${videoSources[currentSourceIndex]}`);
-        video.src = videoSources[currentSourceIndex];
-        currentSourceIndex++;
-      } else {
-        console.log('All video sources failed, using fallback');
+    // Try to load video with timeout and fallback
+    const loadVideo = () => {
+      const video = document.createElement('video');
+      video.muted = true;
+      video.preload = 'metadata';
+      
+      // Set a timeout for video loading
+      const videoTimeout = setTimeout(() => {
+        console.log('Video loading timeout, using fallback');
         setVideoError(true);
         setIsVideoLoaded(true);
-      }
+      }, 10000); // 10 second timeout
+      
+      video.onloadedmetadata = () => {
+        clearTimeout(videoTimeout);
+        console.log('Video preloaded successfully from:', video.src);
+        setIsVideoLoaded(true);
+        setVideoError(false);
+      };
+      
+      video.onerror = () => {
+        clearTimeout(videoTimeout);
+        console.log('Video loading failed, trying next source or fallback');
+        // Don't set error immediately, try next source
+      };
+      
+      // Try multiple video sources with better error handling
+      const videoSources = [
+        '/198896-909564547.mp4',
+        '/anti-bribery-compliance-video.mp4'
+      ];
+      
+      let currentSourceIndex = 0;
+      
+      const tryNextSource = () => {
+        if (currentSourceIndex < videoSources.length) {
+          console.log(`Trying video source: ${videoSources[currentSourceIndex]}`);
+          video.src = videoSources[currentSourceIndex];
+          currentSourceIndex++;
+          
+          // Set a shorter timeout for each source
+          setTimeout(() => {
+            if (currentSourceIndex < videoSources.length) {
+              console.log('Source timeout, trying next');
+              tryNextSource();
+            } else {
+              console.log('All sources timed out, using fallback');
+              setVideoError(true);
+              setIsVideoLoaded(true);
+            }
+          }, 5000); // 5 second timeout per source
+        } else {
+          console.log('All video sources failed, using fallback');
+          setVideoError(true);
+          setIsVideoLoaded(true);
+        }
+      };
+      
+      video.onerror = tryNextSource;
+      tryNextSource();
     };
     
-    video.onerror = tryNextSource;
-    video.onloadedmetadata = () => {
-      console.log('Video preloaded successfully from:', video.src);
-      setIsVideoLoaded(true);
-      setVideoError(false);
-    };
+    // Delay video loading slightly to ensure DOM is ready
+    const videoLoadDelay = setTimeout(loadVideo, 100);
     
-    tryNextSource();
+    return () => {
+      clearTimeout(videoLoadDelay);
+    };
   }, []);
 
   const openVideo = () => {
@@ -92,7 +128,7 @@ const Hero = () => {
           muted
           playsInline
           preload="metadata"
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover ${videoError ? 'hidden' : 'block'}`}
           onLoadStart={() => {
             console.log('Background video loading started');
             setIsVideoLoaded(false);
@@ -100,24 +136,20 @@ const Hero = () => {
           onLoadedData={() => {
             console.log('Background video loaded successfully');
             setIsVideoLoaded(true);
+            setVideoError(false);
           }}
           onCanPlay={() => {
             console.log('Background video can play');
             setIsVideoLoaded(true);
+            setVideoError(false);
           }}
           onError={(e) => {
             const target = e.target as HTMLVideoElement;
             console.error('Background video failed to load:', target.src);
             console.error('Video error details:', target.error);
-            // Fallback to gradient background if video fails
-            try {
-              target.style.display = 'none';
-              const fallback = target.nextSibling as HTMLElement;
-              if (fallback) fallback.style.display = 'block';
-            } catch (error) {
-              console.log('Fallback display change failed:', error);
-            }
-            setIsVideoLoaded(true); // Hide loading indicator
+            // Simply set error state and let CSS handle the fallback
+            setVideoError(true);
+            setIsVideoLoaded(true);
           }}
           onAbort={() => {
             console.log('Background video loading aborted');
@@ -141,7 +173,10 @@ const Hero = () => {
         )}
         
         {/* Fallback gradient background if video fails */}
-        <div className={`absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 ${videoError ? 'opacity-100' : 'opacity-0'}`}></div>
+        <div 
+          data-fallback="true"
+          className={`absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 ${videoError ? 'opacity-100' : 'opacity-0'}`}
+        ></div>
         
         {/* Gradient Overlay - Reduced opacity to show video */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
