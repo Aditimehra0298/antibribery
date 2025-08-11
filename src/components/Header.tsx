@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Menu, X, Shield, Phone, Mail } from 'lucide-react';
+import { Menu, X, Phone, Mail } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // Debug logo loading
+  React.useEffect(() => {
+    console.log('Header component mounted, checking logo path:', '/image (3).png');
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-gray-800">
@@ -18,7 +23,18 @@ const Header = () => {
                 src="/image (3).png" 
                 alt="Eurocert Logo" 
                 className="relative w-24 h-24 object-contain drop-shadow-lg"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  console.error('Failed to load logo:', target.src);
+                  // Fallback to text if image fails
+                  target.style.display = 'none';
+                  const fallback = target.nextSibling as HTMLElement;
+                  if (fallback) fallback.style.display = 'block';
+                }}
               />
+              <div className="hidden w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                EC
+              </div>
             </div>
             <span className="text-2xl font-bold text-white">EUROCERT</span>
           </div>

@@ -9,11 +9,22 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <div className="flex items-center space-x-3 mb-6">
-              <img 
-                src="/image (3).png" 
-                alt="Eurocert Logo" 
-                className="w-10 h-10 object-contain"
-              />
+                                    <img 
+                        src="/image (3).png" 
+                        alt="Eurocert Logo" 
+                        className="w-10 h-10 object-contain"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          console.error('Failed to load footer logo:', target.src);
+                          // Fallback to text if image fails
+                          target.style.display = 'none';
+                          const fallback = target.nextSibling as HTMLElement;
+                          if (fallback) fallback.style.display = 'block';
+                        }}
+                      />
+                      <div className="hidden w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        EC
+                      </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Eurocert</span>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
