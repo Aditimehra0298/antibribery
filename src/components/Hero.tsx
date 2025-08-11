@@ -183,6 +183,9 @@ const Hero = () => {
           className={`absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 ${videoError ? 'opacity-100' : 'opacity-0'}`}
         ></div>
         
+        {/* Black overlay over the video for better content visibility */}
+        <div className="absolute inset-0 bg-black/70"></div>
+        
         {/* Black transparent overlay for better content visibility */}
         <div className="absolute inset-0 bg-black/40"></div>
         
