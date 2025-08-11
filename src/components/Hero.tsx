@@ -38,18 +38,20 @@ const Hero = () => {
       video.muted = true;
       video.preload = 'metadata';
       
-      // Set a timeout for video loading
+      // Set a shorter timeout for Netlify
       const videoTimeout = setTimeout(() => {
         console.log('Video loading timeout, using fallback');
         setVideoError(true);
         setIsVideoLoaded(true);
-      }, 10000); // 10 second timeout
+        console.log('🔄 Using fallback background due to video timeout');
+      }, 5000); // Reduced to 5 seconds for Netlify
       
       video.onloadedmetadata = () => {
         clearTimeout(videoTimeout);
         console.log('Video preloaded successfully from:', video.src);
         setIsVideoLoaded(true);
         setVideoError(false);
+        console.log('✅ Background video is now playing successfully!');
       };
       
       video.onerror = () => {
@@ -72,7 +74,7 @@ const Hero = () => {
           video.src = videoSources[currentSourceIndex];
           currentSourceIndex++;
           
-          // Set a shorter timeout for each source
+          // Set a shorter timeout for each source on Netlify
           setTimeout(() => {
             if (currentSourceIndex < videoSources.length) {
               console.log('Source timeout, trying next');
@@ -81,12 +83,14 @@ const Hero = () => {
               console.log('All sources timed out, using fallback');
               setVideoError(true);
               setIsVideoLoaded(true);
+              console.log('🔄 Using fallback background - all video sources timed out');
             }
-          }, 5000); // 5 second timeout per source
+          }, 3000); // Reduced to 3 seconds per source for Netlify
         } else {
           console.log('All video sources failed, using fallback');
           setVideoError(true);
           setIsVideoLoaded(true);
+          console.log('🔄 Using fallback background - all video sources failed');
         }
       };
       
@@ -177,6 +181,15 @@ const Hero = () => {
           data-fallback="true"
           className={`absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 ${videoError ? 'opacity-100' : 'opacity-0'}`}
         ></div>
+        
+        {/* Simple image fallback for better reliability */}
+        {videoError && (
+          <div className="absolute inset-0">
+            <div className="w-full h-full bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 opacity-100"></div>
+            {/* Optional: Add a subtle pattern or texture */}
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
+          </div>
+        )}
         
         {/* Black transparent overlay for better content visibility */}
         <div className="absolute inset-0 bg-black/60"></div>
