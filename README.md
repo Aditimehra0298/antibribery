@@ -67,7 +67,16 @@ src/
 ├── App.tsx                 # Main application component
 ├── main.tsx               # Application entry point
 └── index.css              # Global styles and animations
+
+public/
+├── image (3).png          # Company logo
+└── [Video files excluded from Git due to size]
 ```
+
+## 📹 Media Files Note
+Large video files are excluded from Git due to GitHub's 100MB file size limit. 
+The Hero section video should be placed in the `public/` folder and referenced as:
+`/invideo-anti-bribery-compliance.mp4`
 
 ## 🔧 Configuration
 
