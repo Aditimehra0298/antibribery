@@ -10,23 +10,60 @@ const Hero = () => {
 
   // Preload video for better performance
   React.useEffect(() => {
+    // First, check if videos are accessible
+    const checkVideoAccessibility = async () => {
+      const videoSources = [
+        '/198896-909564547.mp4',
+        '/anti-bribery-compliance-video.mp4'
+      ];
+      
+      for (const source of videoSources) {
+        try {
+          const response = await fetch(source, { method: 'HEAD' });
+          console.log(`Video source ${source} status:`, response.status, response.statusText);
+          if (response.ok) {
+            console.log(`Video source ${source} is accessible`);
+          }
+        } catch (error) {
+          console.error(`Video source ${source} check failed:`, error);
+        }
+      }
+    };
+    
+    checkVideoAccessibility();
+    
     const video = document.createElement('video');
     video.muted = true;
     video.preload = 'metadata';
     
+    // Try multiple video sources
+    const videoSources = [
+      '/198896-909564547.mp4',
+      '/anti-bribery-compliance-video.mp4'
+    ];
+    
+    let currentSourceIndex = 0;
+    
+    const tryNextSource = () => {
+      if (currentSourceIndex < videoSources.length) {
+        console.log(`Trying video source: ${videoSources[currentSourceIndex]}`);
+        video.src = videoSources[currentSourceIndex];
+        currentSourceIndex++;
+      } else {
+        console.log('All video sources failed, using fallback');
+        setVideoError(true);
+        setIsVideoLoaded(true);
+      }
+    };
+    
+    video.onerror = tryNextSource;
     video.onloadedmetadata = () => {
-      console.log('Video preloaded successfully');
+      console.log('Video preloaded successfully from:', video.src);
       setIsVideoLoaded(true);
       setVideoError(false);
     };
     
-    video.onerror = () => {
-      console.log('Video preload failed, using fallback');
-      setVideoError(true);
-      setIsVideoLoaded(true);
-    };
-    
-    video.src = '/198896-909564547.mp4';
+    tryNextSource();
   }, []);
 
   const openVideo = () => {
@@ -73,9 +110,13 @@ const Hero = () => {
             console.error('Background video failed to load:', target.src);
             console.error('Video error details:', target.error);
             // Fallback to gradient background if video fails
-            target.style.display = 'none';
-            const fallback = target.nextSibling as HTMLElement;
-            if (fallback) fallback.style.display = 'block';
+            try {
+              target.style.display = 'none';
+              const fallback = target.nextSibling as HTMLElement;
+              if (fallback) fallback.style.display = 'block';
+            } catch (error) {
+              console.log('Fallback display change failed:', error);
+            }
             setIsVideoLoaded(true); // Hide loading indicator
           }}
           onAbort={() => {
@@ -210,9 +251,13 @@ const Hero = () => {
                   const target = e.target as HTMLVideoElement;
                   console.error('Learn More video failed to load:', target.src);
                   // Show error message if video fails
-                  target.style.display = 'none';
-                  const errorDiv = target.nextSibling as HTMLElement;
-                  if (errorDiv) errorDiv.style.display = 'block';
+                  try {
+                    target.style.display = 'none';
+                    const errorDiv = target.nextSibling as HTMLElement;
+                    if (errorDiv) errorDiv.style.display = 'block';
+                  } catch (error) {
+                    console.log('Learn More video error display change failed:', error);
+                  }
                 }}
               >
                 <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
