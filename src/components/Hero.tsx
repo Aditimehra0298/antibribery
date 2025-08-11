@@ -33,19 +33,19 @@ const Hero = () => {
     
     checkVideoAccessibility();
     
-    // Try to load video with timeout and fallback
+    // Try to load video with longer timeout to allow video to actually load
     const loadVideo = () => {
       const video = document.createElement('video');
       video.muted = true;
       video.preload = 'metadata';
       
-      // Set a shorter timeout for Netlify
+      // Give video more time to load before showing fallback
       const videoTimeout = setTimeout(() => {
         console.log('Video loading timeout, using fallback');
         setVideoError(true);
         setIsVideoLoaded(true);
         console.log('🔄 Using fallback background due to video timeout');
-      }, 5000); // Reduced to 5 seconds for Netlify
+      }, 15000); // Increased to 15 seconds to allow video to load
       
       video.onloadedmetadata = () => {
         clearTimeout(videoTimeout);
@@ -75,7 +75,7 @@ const Hero = () => {
           video.src = videoSources[currentSourceIndex];
           currentSourceIndex++;
           
-          // Set a shorter timeout for each source on Netlify
+          // Give each source more time to load
           setTimeout(() => {
             if (currentSourceIndex < videoSources.length) {
               console.log('Source timeout, trying next');
@@ -86,7 +86,7 @@ const Hero = () => {
               setIsVideoLoaded(true);
               console.log('🔄 Using fallback background - all video sources timed out');
             }
-          }, 3000); // Reduced to 3 seconds per source for Netlify
+          }, 8000); // Increased to 8 seconds per source
         } else {
           console.log('All video sources failed, using fallback');
           setVideoError(true);
@@ -100,7 +100,7 @@ const Hero = () => {
     };
     
     // Delay video loading slightly to ensure DOM is ready
-    const videoLoadDelay = setTimeout(loadVideo, 100);
+    const videoLoadDelay = setTimeout(loadVideo, 500); // Increased delay to 500ms
     
     return () => {
       clearTimeout(videoLoadDelay);
@@ -133,7 +133,7 @@ const Hero = () => {
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           className={`w-full h-full object-cover ${videoError ? 'hidden' : 'block'}`}
           onLoadStart={() => {
             console.log('Background video loading started');
@@ -153,9 +153,8 @@ const Hero = () => {
             const target = e.target as HTMLVideoElement;
             console.error('Background video failed to load:', target.src);
             console.error('Video error details:', target.error);
-            // Simply set error state and let CSS handle the fallback
-            setVideoError(true);
-            setIsVideoLoaded(true);
+            // Only set error after trying all sources
+            console.log('Background video element error, but checking if preloader succeeded...');
           }}
           onAbort={() => {
             console.log('Background video loading aborted');
@@ -194,10 +193,10 @@ const Hero = () => {
         )}
         
         {/* Black transparent overlay for better content visibility */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
         
         {/* Gradient Overlay - Reduced opacity to show video */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
       </div>
 
       {/* Content */}
