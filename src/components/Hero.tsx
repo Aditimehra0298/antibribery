@@ -7,6 +7,7 @@ const Hero = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [learnMoreVideoError, setLearnMoreVideoError] = useState(false);
 
   // Preload video for better performance
   React.useEffect(() => {
@@ -112,6 +113,7 @@ const Hero = () => {
 
   const closeVideo = () => {
     setIsVideoOpen(false);
+    setLearnMoreVideoError(false); // Reset error state when closing
   };
 
   const openForm = () => {
@@ -297,25 +299,19 @@ const Hero = () => {
               <video
                 autoPlay
                 controls
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover ${learnMoreVideoError ? 'hidden' : 'block'}`}
                 onError={(e) => {
                   const target = e.target as HTMLVideoElement;
                   console.error('Learn More video failed to load:', target.src);
-                  // Show error message if video fails
-                  try {
-                    target.style.display = 'none';
-                    const errorDiv = target.nextSibling as HTMLElement;
-                    if (errorDiv) errorDiv.style.display = 'block';
-                  } catch (error) {
-                    console.log('Learn More video error display change failed:', error);
-                  }
+                  // Set error state and show error message
+                  setLearnMoreVideoError(true);
                 }}
               >
                 <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               {/* Error message if video fails */}
-              <div className="hidden w-full h-full bg-gray-800 rounded-2xl flex items-center justify-center">
+              <div className={`w-full h-full bg-gray-800 rounded-2xl ${learnMoreVideoError ? 'flex' : 'hidden'} items-center justify-center`}>
                 <div className="text-center text-white">
                   <div className="text-6xl mb-4">🎥</div>
                   <h3 className="text-xl font-bold mb-2">Video Loading Issue</h3>
