@@ -10,7 +10,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-3 mb-6">
               <img 
-                src="/image (3).png" 
+                src="public/image (3).png" 
                 alt="Eurocert Logo" 
                 className="w-10 h-10 object-contain"
               />
