@@ -176,7 +176,7 @@ const Hero = () => {
                   if (errorDiv) errorDiv.style.display = 'block';
                 }}
               >
-                <source src="/198896-909564547.mp4" type="video/mp4" />
+                <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               {/* Error message if video fails */}
