@@ -143,7 +143,7 @@ npm run build
 
 - **Email**: bdm@eurocert.in
 - **Phone**: +91-9779665056
-- **WhatsApp**: +91-9056742781
+- **WhatsApp**: +91-9779665056
 
 ## 📄 License
 

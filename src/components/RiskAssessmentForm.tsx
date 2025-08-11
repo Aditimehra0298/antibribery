@@ -212,7 +212,7 @@ const RiskAssessmentForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <h3 className="text-lg font-bold text-white mb-4">Need Immediate Assistance?</h3>
             <div className="space-y-2 text-gray-300">
               <p>📧 <span className="text-blue-400">audits@eurocert.in</span></p>
-              <p>📞 <span className="text-blue-400">+91-XXXX-XXXXXX</span></p>
+                              <p>📞 <span className="text-blue-400">+91-9779665056</span></p>
               <p>⏰ <span className="text-green-400">24/7 Emergency Support Available</span></p>
             </div>
           </div>
