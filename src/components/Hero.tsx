@@ -32,10 +32,20 @@ const Hero = () => {
           muted
           playsInline
           className="w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLVideoElement;
+            console.error('Background video failed to load:', target.src);
+            // Fallback to gradient background if video fails
+            target.style.display = 'none';
+            const fallback = target.nextSibling as HTMLElement;
+            if (fallback) fallback.style.display = 'block';
+          }}
         >
-          <source src="/invideo-anti-bribery-compliance.mp4" type="video/mp4" />
+          <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+        {/* Fallback gradient background if video fails */}
+        <div className="hidden absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900"></div>
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
       </div>
@@ -140,10 +150,26 @@ const Hero = () => {
                 autoPlay
                 controls
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLVideoElement;
+                  console.error('Learn More video failed to load:', target.src);
+                  // Show error message if video fails
+                  target.style.display = 'none';
+                  const errorDiv = target.nextSibling as HTMLElement;
+                  if (errorDiv) errorDiv.style.display = 'block';
+                }}
               >
-                <source src="/invideo-ai-1080 Are You Compliant_ Anti-Bribery Laws Dem 2025-08-11 (1).mp4" type="video/mp4" />
+                <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
+              {/* Error message if video fails */}
+              <div className="hidden w-full h-full bg-gray-800 rounded-2xl flex items-center justify-center">
+                <div className="text-center text-white">
+                  <div className="text-6xl mb-4">🎥</div>
+                  <h3 className="text-xl font-bold mb-2">Video Loading Issue</h3>
+                  <p className="text-gray-300">Please refresh the page or try again later.</p>
+                </div>
+              </div>
             </div>
             
             {/* Video Title */}
