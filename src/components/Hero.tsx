@@ -164,7 +164,7 @@ const Hero = () => {
                       <Play className="w-6 h-6 text-white" />
                     </div>
                     <span className="text-white font-semibold">Video Guide</span>
-                    <p className="text-gray-400 text-sm mt-1">Watch our compliance video</p>
+                    <p className="text-gray-400 text-sm mt-1">Watch our anti-bribery video</p>
                   </div>
                 </button>
                 
@@ -191,22 +191,22 @@ const Hero = () => {
             {videoType === 'youtube' && (
               <>
                 <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
-                  <iframe
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&modestbranding=1"
-                    title="Anti-Bribery Compliance Video"
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+                  <video
+                    autoPlay
+                    controls
+                    className="w-full h-full object-cover"
+                  >
+                    <source src="/invideo-ai-1080 Are You Compliant_ Anti-Bribery Laws Dem 2025-08-11 (1).mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
                 
                 <div className="text-center mt-6">
                   <h3 className="text-2xl font-bold text-white mb-2">
-                    Anti-Bribery Compliance Guide
+                    Are You Compliant? Anti-Bribery Laws
                   </h3>
                   <p className="text-gray-300">
-                    Essential insights into anti-bribery laws and compliance requirements for businesses
+                    Learn about the critical importance of anti-bribery compliance for your business
                   </p>
                 </div>
               </>
