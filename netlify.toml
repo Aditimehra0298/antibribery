@@ -62,6 +62,40 @@
   [headers.values]
     Content-Type = "image/x-icon"
 
+# Enhanced video headers for better compatibility
+[[headers]]
+  for = "/*.mp4"
+  [headers.values]
+    Content-Type = "video/mp4"
+    Cache-Control = "public, max-age=31536000"
+    Access-Control-Allow-Origin = "*"
+    Accept-Ranges = "bytes"
+    Content-Length = "auto"
+    X-Content-Type-Options = "nosniff"
+
+# Additional video formats support
+[[headers]]
+  for = "/*.webm"
+  [headers.values]
+    Content-Type = "video/webm"
+    Cache-Control = "public, max-age=31536000"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/*.ogg"
+  [headers.values]
+    Content-Type = "video/ogg"
+    Cache-Control = "public, max-age=31536000"
+    Access-Control-Allow-Origin = "*"
+
+# CORS headers for all assets
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, HEAD, OPTIONS"
+    Access-Control-Allow-Headers = "Range"
+
 # Security headers
 [[headers]]
   for = "/*"

@@ -6,6 +6,28 @@ const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+
+  // Preload video for better performance
+  React.useEffect(() => {
+    const video = document.createElement('video');
+    video.muted = true;
+    video.preload = 'metadata';
+    
+    video.onloadedmetadata = () => {
+      console.log('Video preloaded successfully');
+      setIsVideoLoaded(true);
+      setVideoError(false);
+    };
+    
+    video.onerror = () => {
+      console.log('Video preload failed, using fallback');
+      setVideoError(true);
+      setIsVideoLoaded(true);
+    };
+    
+    video.src = '/198896-909564547.mp4';
+  }, []);
 
   const openVideo = () => {
     setIsVideoOpen(true);
@@ -32,39 +54,56 @@ const Hero = () => {
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="w-full h-full object-cover"
-          onLoadStart={() => console.log('Background video loading started')}
+          onLoadStart={() => {
+            console.log('Background video loading started');
+            setIsVideoLoaded(false);
+          }}
           onLoadedData={() => {
             console.log('Background video loaded successfully');
+            setIsVideoLoaded(true);
+          }}
+          onCanPlay={() => {
+            console.log('Background video can play');
             setIsVideoLoaded(true);
           }}
           onError={(e) => {
             const target = e.target as HTMLVideoElement;
             console.error('Background video failed to load:', target.src);
+            console.error('Video error details:', target.error);
             // Fallback to gradient background if video fails
             target.style.display = 'none';
             const fallback = target.nextSibling as HTMLElement;
             if (fallback) fallback.style.display = 'block';
+            setIsVideoLoaded(true); // Hide loading indicator
+          }}
+          onAbort={() => {
+            console.log('Background video loading aborted');
+            setIsVideoLoaded(true);
           }}
         >
           <source src="/198896-909564547.mp4" type="video/mp4" />
+          <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+        
         {/* Loading indicator */}
         {!isVideoLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
             <div className="text-white text-center">
               <div className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
               <p className="text-lg font-semibold">Loading Video...</p>
+              <p className="text-sm text-gray-400 mt-2">Please wait while we prepare your experience</p>
             </div>
           </div>
         )}
         
         {/* Fallback gradient background if video fails */}
-        <div className="hidden absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900"></div>
+        <div className={`absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 ${videoError ? 'opacity-100' : 'opacity-0'}`}></div>
+        
         {/* Gradient Overlay - Reduced opacity to show video */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
       </div>
 
       {/* Content */}
