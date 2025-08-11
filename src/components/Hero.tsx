@@ -192,7 +192,7 @@ const Hero = () => {
         </video>
         
         {/* Loading indicator */}
-        {!isVideoLoaded && (
+        {!isVideoLoaded && !videoError && (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
             <div className="text-white text-center">
               <div className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -217,6 +217,9 @@ const Hero = () => {
             <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_25%,rgba(255,255,255,0.05)_50%,transparent_50%,transparent_75%,rgba(255,255,255,0.05)_75%)] bg-[length:20px_20px] animate-pulse"></div>
           </div>
         )}
+        
+        {/* Always visible fallback background for Netlify */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 opacity-100"></div>
         
         {/* Black transparent overlay for better content visibility */}
         <div className="absolute inset-0 bg-black/40"></div>
