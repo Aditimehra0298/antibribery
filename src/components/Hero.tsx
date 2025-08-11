@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowRight, AlertTriangle, Play, X, Phone } from 'lucide-react';
+import { ArrowRight, AlertTriangle, Play, X, Phone, FileText } from 'lucide-react';
 import RiskAssessmentForm from './RiskAssessmentForm';
 
 const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [videoType, setVideoType] = useState('youtube');
 
   const openVideo = () => {
     setIsVideoOpen(true);
@@ -12,6 +13,7 @@ const Hero = () => {
 
   const closeVideo = () => {
     setIsVideoOpen(false);
+    setVideoType('youtube'); // Reset to default
   };
 
   const openForm = () => {
@@ -145,27 +147,98 @@ const Hero = () => {
               <X className="w-8 h-8" />
             </button>
             
-            {/* Video Container */}
-            <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
-              <video
-                autoPlay
-                controls
-                className="w-full h-full object-cover"
-              >
-                <source src="/invideo-anti-bribery-compliance.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+            {/* Video Options */}
+            <div className="bg-gray-800 rounded-2xl p-6 mb-6">
+              <h3 className="text-xl font-bold text-white mb-4 text-center">Choose Your Learning Path</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button 
+                  onClick={() => setVideoType('youtube')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-300 ${
+                    videoType === 'youtube' 
+                      ? 'border-blue-400 bg-blue-400/20' 
+                      : 'border-gray-600 hover:border-blue-400'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Play className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="text-white font-semibold">Video Guide</span>
+                    <p className="text-gray-400 text-sm mt-1">Watch our compliance video</p>
+                  </div>
+                </button>
+                
+                <button 
+                  onClick={() => setVideoType('info')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-300 ${
+                    videoType === 'info' 
+                      ? 'border-blue-400 bg-blue-400/20' 
+                      : 'border-gray-600 hover:border-blue-400'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <FileText className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="text-white font-semibold">Info Guide</span>
+                    <p className="text-gray-400 text-sm mt-1">Read compliance overview</p>
+                  </div>
+                </button>
+              </div>
             </div>
             
-            {/* Video Title */}
-            <div className="text-center mt-6">
-              <h3 className="text-2xl font-bold text-white mb-2">
-                Are You Compliant? Anti-Bribery Laws
-              </h3>
-              <p className="text-gray-300">
-                Learn about the critical importance of anti-bribery compliance for your business
-              </p>
-            </div>
+            {/* Content Display */}
+            {videoType === 'youtube' && (
+              <>
+                <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
+                  <iframe
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&modestbranding=1"
+                    title="Anti-Bribery Compliance Video"
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                
+                <div className="text-center mt-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Anti-Bribery Compliance Guide
+                  </h3>
+                  <p className="text-gray-300">
+                    Essential insights into anti-bribery laws and compliance requirements for businesses
+                  </p>
+                </div>
+              </>
+            )}
+            
+            {videoType === 'info' && (
+              <div className="bg-gray-800 rounded-2xl p-8 text-center">
+                <h3 className="text-2xl font-bold text-white mb-6">
+                  Anti-Bribery Compliance Overview
+                </h3>
+                <div className="space-y-4 text-left max-w-2xl mx-auto">
+                  <div className="bg-gray-700 p-4 rounded-lg">
+                    <h4 className="text-blue-400 font-semibold mb-2">What is Anti-Bribery Compliance?</h4>
+                    <p className="text-gray-300 text-sm">
+                      Anti-bribery compliance involves implementing policies and procedures to prevent bribery and corruption in business operations.
+                    </p>
+                  </div>
+                  <div className="bg-gray-700 p-4 rounded-lg">
+                    <h4 className="text-green-400 font-semibold mb-2">Why It Matters</h4>
+                    <p className="text-gray-300 text-sm">
+                      Non-compliance can result in severe penalties, legal action, and damage to your company's reputation and brand value.
+                    </p>
+                  </div>
+                  <div className="bg-gray-700 p-4 rounded-lg">
+                    <h4 className="text-purple-400 font-semibold mb-2">How Eurocert Helps</h4>
+                    <p className="text-gray-300 text-sm">
+                      We provide comprehensive audits, risk assessments, and compliance frameworks to protect your business.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
