@@ -11,6 +11,18 @@ const Hero = () => {
 
   // Preload video for better performance
   React.useEffect(() => {
+    // Check if we're on Netlify (production) or localhost (development)
+    const isNetlify = window.location.hostname.includes('netlify') || 
+                     window.location.hostname.includes('eurocertantibribery');
+    const isLocalhost = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1';
+    
+    console.log('Environment detected:', {
+      hostname: window.location.hostname,
+      isNetlify,
+      isLocalhost
+    });
+    
     // First, check if videos are accessible
     const checkVideoAccessibility = async () => {
       const videoSources = [
@@ -33,78 +45,91 @@ const Hero = () => {
     
     checkVideoAccessibility();
     
-    // Try to load video with longer timeout to allow video to actually load
-    const loadVideo = () => {
-      const video = document.createElement('video');
-      video.muted = true;
-      video.preload = 'metadata';
+    // On Netlify, use fallback immediately for better performance
+    if (isNetlify) {
+      console.log('🔄 Netlify detected: Using optimized fallback background');
+      setVideoError(true);
+      setIsVideoLoaded(true);
+      return; // Skip video loading on Netlify
+    }
+    
+    // Only try video loading on localhost/development
+    if (isLocalhost) {
+      console.log('🖥️ Localhost detected: Attempting video loading');
       
-      // Give video more time to load before showing fallback
-      const videoTimeout = setTimeout(() => {
-        console.log('Video loading timeout, using fallback');
-        setVideoError(true);
-        setIsVideoLoaded(true);
-        console.log('🔄 Using fallback background due to video timeout');
-      }, 15000); // Increased to 15 seconds to allow video to load
-      
-      video.onloadedmetadata = () => {
-        clearTimeout(videoTimeout);
-        console.log('Video preloaded successfully from:', video.src);
-        setIsVideoLoaded(true);
-        setVideoError(false);
-        console.log('✅ Background video is now playing successfully!');
-      };
-      
-      video.onerror = () => {
-        clearTimeout(videoTimeout);
-        console.log('Video loading failed, trying next source or fallback');
-        // Don't set error immediately, try next source
-      };
-      
-      // Try multiple video sources with better error handling
-      const videoSources = [
-        '/198896-909564547.mp4',
-        '/anti-bribery-compliance-video.mp4'
-      ];
-      
-      let currentSourceIndex = 0;
-      
-      const tryNextSource = () => {
-        if (currentSourceIndex < videoSources.length) {
-          console.log(`Trying video source: ${videoSources[currentSourceIndex]}`);
-          video.src = videoSources[currentSourceIndex];
-          currentSourceIndex++;
-          
-          // Give each source more time to load
-          setTimeout(() => {
-            if (currentSourceIndex < videoSources.length) {
-              console.log('Source timeout, trying next');
-              tryNextSource();
-            } else {
-              console.log('All sources timed out, using fallback');
-              setVideoError(true);
-              setIsVideoLoaded(true);
-              console.log('🔄 Using fallback background - all video sources timed out');
-            }
-          }, 8000); // Increased to 8 seconds per source
-        } else {
-          console.log('All video sources failed, using fallback');
+      // Try to load video with longer timeout to allow video to actually load
+      const loadVideo = () => {
+        const video = document.createElement('video');
+        video.muted = true;
+        video.preload = 'auto';
+        
+        // Give video more time to load before showing fallback
+        const videoTimeout = setTimeout(() => {
+          console.log('Video loading timeout, using fallback');
           setVideoError(true);
           setIsVideoLoaded(true);
-          console.log('🔄 Using fallback background - all video sources failed');
-        }
+          console.log('🔄 Using fallback background due to video timeout');
+        }, 15000); // Increased to 15 seconds to allow video to load
+        
+        video.onloadedmetadata = () => {
+          clearTimeout(videoTimeout);
+          console.log('Video preloaded successfully from:', video.src);
+          setIsVideoLoaded(true);
+          setVideoError(false);
+          console.log('✅ Background video is now playing successfully!');
+        };
+        
+        video.onerror = () => {
+          clearTimeout(videoTimeout);
+          console.log('Video loading failed, trying next source or fallback');
+          // Don't set error immediately, try next source
+        };
+        
+        // Try multiple video sources with better error handling
+        const videoSources = [
+          '/198896-909564547.mp4',
+          '/anti-bribery-compliance-video.mp4'
+        ];
+        
+        let currentSourceIndex = 0;
+        
+        const tryNextSource = () => {
+          if (currentSourceIndex < videoSources.length) {
+            console.log(`Trying video source: ${videoSources[currentSourceIndex]}`);
+            video.src = videoSources[currentSourceIndex];
+            currentSourceIndex++;
+            
+            // Give each source more time to load
+            setTimeout(() => {
+              if (currentSourceIndex < videoSources.length) {
+                console.log('Source timeout, trying next');
+                tryNextSource();
+              } else {
+                console.log('All sources timed out, using fallback');
+                setVideoError(true);
+                setIsVideoLoaded(true);
+                console.log('🔄 Using fallback background - all video sources timed out');
+              }
+            }, 8000); // Increased to 8 seconds per source
+          } else {
+            console.log('All video sources failed, using fallback');
+            setVideoError(true);
+            setIsVideoLoaded(true);
+            console.log('🔄 Using fallback background - all video sources failed');
+          }
+        };
+        
+        video.onerror = tryNextSource;
+        tryNextSource();
       };
       
-      video.onerror = tryNextSource;
-      tryNextSource();
-    };
-    
-    // Delay video loading slightly to ensure DOM is ready
-    const videoLoadDelay = setTimeout(loadVideo, 500); // Increased delay to 500ms
-    
-    return () => {
-      clearTimeout(videoLoadDelay);
-    };
+      // Delay video loading slightly to ensure DOM is ready
+      const videoLoadDelay = setTimeout(loadVideo, 500); // Increased delay to 500ms
+      
+      return () => {
+        clearTimeout(videoLoadDelay);
+      };
+    }
   }, []);
 
   const openVideo = () => {
@@ -187,8 +212,9 @@ const Hero = () => {
         {videoError && (
           <div className="absolute inset-0">
             <div className="w-full h-full bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 opacity-100"></div>
-            {/* Optional: Add a subtle pattern or texture */}
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
+            {/* Enhanced animated pattern for Netlify */}
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)] animate-pulse"></div>
+            <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_25%,rgba(255,255,255,0.05)_50%,transparent_50%,transparent_75%,rgba(255,255,255,0.05)_75%)] bg-[length:20px_20px] animate-pulse"></div>
           </div>
         )}
         
