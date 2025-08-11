@@ -5,6 +5,7 @@ import RiskAssessmentForm from './RiskAssessmentForm';
 const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const openVideo = () => {
     setIsVideoOpen(true);
@@ -31,7 +32,13 @@ const Hero = () => {
           loop
           muted
           playsInline
+          preload="auto"
           className="w-full h-full object-cover"
+          onLoadStart={() => console.log('Background video loading started')}
+          onLoadedData={() => {
+            console.log('Background video loaded successfully');
+            setIsVideoLoaded(true);
+          }}
           onError={(e) => {
             const target = e.target as HTMLVideoElement;
             console.error('Background video failed to load:', target.src);
@@ -41,13 +48,23 @@ const Hero = () => {
             if (fallback) fallback.style.display = 'block';
           }}
         >
-          <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
+          <source src="/198896-909564547.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+        {/* Loading indicator */}
+        {!isVideoLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+            <div className="text-white text-center">
+              <div className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-lg font-semibold">Loading Video...</p>
+            </div>
+          </div>
+        )}
+        
         {/* Fallback gradient background if video fails */}
         <div className="hidden absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900"></div>
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+        {/* Gradient Overlay - Reduced opacity to show video */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
       </div>
 
       {/* Content */}
@@ -159,7 +176,7 @@ const Hero = () => {
                   if (errorDiv) errorDiv.style.display = 'block';
                 }}
               >
-                <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
+                <source src="/198896-909564547.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               {/* Error message if video fails */}
