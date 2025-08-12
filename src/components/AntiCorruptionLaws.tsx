@@ -40,6 +40,19 @@ const AntiCorruptionLaws = () => {
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]"></div>
       
+      {/* Indian National Emblem Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://indiafirstfoundation.wordpress.com/wp-content/uploads/2010/07/175px-emblem_of_india-svg.png')`,
+            backgroundSize: '400px',
+            backgroundPosition: 'center',
+            filter: 'brightness(0.8) contrast(1.2)'
+          }}
+        ></div>
+      </div>
+      
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
