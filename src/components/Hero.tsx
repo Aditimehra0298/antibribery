@@ -50,7 +50,7 @@ const Hero = () => {
           {/* Alert Badge */}
           <div className="inline-flex items-center space-x-2 bg-red-900/30 border border-red-500/50 rounded-full px-4 py-2 mb-8 animate-pulse hover:animate-bounce transition-all duration-300 hover:scale-105">
             <AlertTriangle className="w-5 h-5 text-red-400" />
-            <span className="text-red-300 text-sm font-medium">Eurocert’s Anti-Bribery Audit: Mitigate risks, ensure compliance, and uphold ethics.</span>
+            <span className="text-red-300 text-sm font-medium">Eurocert’s Anti-Bribery Audit: Mitigate risks, Ensure Compliance, and Uphold Ethics.</span>
           </div>
 
           {/* Main Headline */}
