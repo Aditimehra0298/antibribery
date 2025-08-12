@@ -1,24 +1,9 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, AlertTriangle, Phone, X } from 'lucide-react';
+import { ArrowRight, AlertTriangle, Phone } from 'lucide-react';
 import RiskAssessmentForm from './RiskAssessmentForm';
 
 const Hero = () => {
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const [isVideoLoading, setIsVideoLoading] = useState(false);
-  const [videoError, setVideoError] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-
-  const openVideo = () => {
-    setIsVideoOpen(true);
-    setIsVideoLoading(true);
-    setVideoError(false);
-  };
-
-  const closeVideo = () => {
-    setIsVideoOpen(false);
-    setIsVideoLoading(false);
-    setVideoError(false);
-  };
 
   const openForm = () => {
     setIsFormOpen(true);
@@ -82,7 +67,7 @@ const Hero = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-1000">
+          <div className="flex justify-center items-center animate-fade-in-up animation-delay-1000">
             <button 
               onClick={openForm}
               className="group bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-500 transform hover:scale-110 shadow-2xl hover:shadow-blue-500/50 flex items-center space-x-2 animate-bounce-slow hover:animate-none relative overflow-hidden"
@@ -90,14 +75,6 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               <span>Get Your Risk Assessment</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
-            </button>
-            
-            <button 
-              onClick={openVideo}
-              className="border-2 border-gray-600 hover:border-blue-400 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-500 hover:bg-blue-400/20 hover:shadow-lg hover:shadow-blue-400/25 flex items-center space-x-2 hover:scale-105 group"
-            >
-              <Shield className="w-5 h-5" />
-              <span>Learn More</span>
             </button>
           </div>
 
@@ -192,72 +169,7 @@ const Hero = () => {
         </div>
       </a>
 
-      {/* Video Modal */}
-      {isVideoOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
-          <div className="relative w-full max-w-4xl mx-4">
-            {/* Close Button */}
-            <button
-              onClick={closeVideo}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors duration-300 z-10"
-            >
-              <X className="w-8 h-8" />
-            </button>
-            
-            {/* Video Player */}
-            <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
-              {isVideoLoading && (
-                <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-10">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-                  <p className="ml-4 text-white text-lg">Loading video...</p>
-                </div>
-              )}
-              {videoError && (
-                <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-10 text-white">
-                  <div className="text-6xl mb-4">🎥</div>
-                  <h3 className="text-xl font-bold mb-2">Video Loading Issue</h3>
-                  <p className="text-gray-300 mb-4">The video is temporarily unavailable.</p>
-                  <div className="space-y-2 text-sm text-gray-400">
-                    <p>• Please try again later</p>
-                    <p>• Check your internet connection</p>
-                    <p>• Contact us for direct assistance</p>
-                  </div>
-                </div>
-              )}
-              {!isVideoLoading && !videoError && (
-                <video
-                  autoPlay
-                  controls
-                  className="w-full h-full object-cover"
-                  onLoadStart={() => setIsVideoLoading(true)}
-                  onLoadedData={() => setIsVideoLoading(false)}
-                  onCanPlay={() => setIsVideoLoading(false)}
-                  onError={(e) => {
-                    const target = e.target as HTMLVideoElement;
-                    console.error('Video failed to load:', target.src);
-                    setVideoError(true);
-                    setIsVideoLoading(false);
-                  }}
-                >
-                  <source src="./anti-bribery-compliance-video.mp4" type="video/mp4" />
-                  <source src="./198896-909564547.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              )}
-            </div>
-            
-            {/* Video Title */}
-            <div className="text-center mt-6">
-              <h3 className="text-2xl font-bold text-white mb-2">
-                Anti-Bribery Compliance Video
-              </h3>
-              <p className="text-gray-300">
-                Learn about the critical importance of anti-bribery compliance for your business
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* Consultation Form Modal */}
       <RiskAssessmentForm isOpen={isFormOpen} onClose={closeForm} />
