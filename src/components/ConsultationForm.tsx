@@ -60,20 +60,27 @@ const ConsultationForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
     }, 5000);
   };
 
-  const submitToGoogleSheets = async (data: any) => {
+  const submitToGoogleSheets = async (data: typeof formData) => {
     try {
       console.log('Submitting data to Google Sheets:', data);
       console.log('Google Sheets URL:', GOOGLE_SHEETS_URL);
       
+      // Convert data to FormData (this bypasses CORS issues)
+      const formDataToSend = new FormData();
+      formDataToSend.append('formType', 'Comprehensive Consultation Request');
+      
+      // Add all form fields
+      Object.entries(data).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          formDataToSend.append(key, value.join(', '));
+        } else {
+          formDataToSend.append(key, String(value));
+        }
+      });
+
       const response = await fetch(GOOGLE_SHEETS_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          formType: 'Comprehensive Consultation Request',
-          ...data
-        }),
+        body: formDataToSend, // Use FormData instead of JSON
       });
 
       console.log('Response status:', response.status);
@@ -85,7 +92,7 @@ const ConsultationForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
         throw new Error(`Failed to submit form: ${response.status} ${errorText}`);
       }
 
-      const result = await response.json();
+      const result = await response.text();
       console.log('Google Sheets response:', result);
       return result;
     } catch (error) {
@@ -104,7 +111,9 @@ const ConsultationForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
       showNotification('success', 'Form submitted successfully! You will receive a confirmation email shortly.');
       setIsSubmitted(true);
     } catch (error) {
-      showNotification('error', 'Failed to submit form. Please try again or contact support.');
+      console.error('Error submitting to Google Sheets:', error);
+      showNotification('error', `Failed to submit form: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw error;
     } finally {
       setIsSubmitting(false);
     }
