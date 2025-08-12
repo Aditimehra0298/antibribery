@@ -29,6 +29,16 @@ const WhyChoose = () => {
     }
   ];
 
+  const industries = [
+    "Healthcare & Pharmaceuticals",
+    "Real Estate & Construction", 
+    "Banking & Financial Services",
+    "Freight & Logistics",
+    "Manufacturing & IT",
+    "Retail & FMCG",
+    "Education & Research"
+  ];
+
   return (
     <section id="why-choose" className="py-20 bg-gray-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,6 +50,71 @@ const WhyChoose = () => {
           <p className="text-xl text-gray-300 max-w-3xl mx-auto animate-fade-in-up animation-delay-300">
             We're not just auditors – we're your partners in building an unshakeable reputation
           </p>
+        </div>
+
+        {/* New Content Section */}
+        <div className="mb-16 space-y-8">
+          {/* Tailored Services */}
+          <div className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8 animate-fade-in-up animation-delay-400">
+            <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+              <CheckCircle className="w-8 h-8 text-blue-400 mr-3" />
+              Tailored for High-Revenue Private Companies
+            </h3>
+            <p className="text-lg text-gray-200 leading-relaxed">
+              We specialize in audits for businesses with revenues over <span className="text-blue-400 font-semibold">₹50 Crore</span>. 
+              Our expertise is designed to meet the unique compliance challenges faced by large-scale enterprises.
+            </p>
+          </div>
+
+          {/* High-Risk Sectors */}
+          <div className="bg-gradient-to-r from-red-900/30 to-orange-900/30 backdrop-blur-sm border border-red-500/30 rounded-2xl p-8 animate-fade-in-up animation-delay-500">
+            <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+              <Shield className="w-8 h-8 text-red-400 mr-3" />
+              High-Risk Sectors
+            </h3>
+            <p className="text-lg text-gray-200 leading-relaxed mb-4">
+              We focus on industries with elevated corruption risks:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {["Real Estate", "Banking", "Healthcare", "Freight & Logistics", "Manufacturing"].map((sector, index) => (
+                <div key={index} className="flex items-center space-x-2 text-gray-200">
+                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                  <span>{sector}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Compliance Focus */}
+          <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 backdrop-blur-sm border border-green-500/30 rounded-2xl p-8 animate-fade-in-up animation-delay-600">
+            <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+              <Star className="w-8 h-8 text-green-400 mr-3" />
+              Ensure Compliance
+            </h3>
+            <p className="text-lg text-gray-200 leading-relaxed">
+              Protect your brand and avoid costly legal consequences. Our comprehensive audits identify vulnerabilities 
+              and provide actionable solutions to strengthen your anti-bribery framework.
+            </p>
+          </div>
+
+          {/* Industries We Serve */}
+          <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 backdrop-blur-sm border border-purple-500/30 rounded-2xl p-8 animate-fade-in-up animation-delay-700">
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">
+              Industries We Serve
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {industries.map((industry, index) => (
+                <div key={index} className="group bg-gray-800/50 rounded-xl p-4 hover:bg-gray-700/50 transition-all duration-300 hover:transform hover:scale-105">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-purple-400 rounded-full group-hover:bg-purple-300 transition-colors duration-300"></div>
+                    <span className="text-gray-200 group-hover:text-white transition-colors duration-300 font-medium">
+                      {industry}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Features Grid */}
