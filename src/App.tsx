@@ -9,6 +9,7 @@ import Process from './components/Process';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import RiskAssessmentPage from './components/RiskAssessmentPage';
+import AntiCorruptionLaws from './components/AntiCorruptionLaws';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <>
               <Header />
               <Hero />
+              <AntiCorruptionLaws />
               <WhyChoose />
               <RiskAssessment />
               <Services />
