@@ -141,7 +141,7 @@ const Hero = () => {
         href="https://wa.me/+919779665056"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group"
+        className="fixed bottom-24 right-4 sm:bottom-28 sm:right-6 z-50 group"
         aria-label="Contact us on WhatsApp"
       >
         {/* Pulsing Ring Effect */}
