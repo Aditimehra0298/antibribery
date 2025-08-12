@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, AlertTriangle, Phone, X } from 'lucide-react';
+import ConsultationForm from './ConsultationForm';
 
 const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const openVideo = () => {
     setIsVideoOpen(true);
@@ -16,6 +18,14 @@ const Hero = () => {
     setIsVideoOpen(false);
     setIsVideoLoading(false);
     setVideoError(false);
+  };
+
+  const openForm = () => {
+    setIsFormOpen(true);
+  };
+
+  const closeForm = () => {
+    setIsFormOpen(false);
   };
 
   return (
@@ -67,7 +77,10 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-1000">
-            <button className="group bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-500 transform hover:scale-110 shadow-2xl hover:shadow-blue-500/50 flex items-center space-x-2 animate-bounce-slow hover:animate-none relative overflow-hidden">
+            <button 
+              onClick={openForm}
+              className="group bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-500 transform hover:scale-110 shadow-2xl hover:shadow-blue-500/50 flex items-center space-x-2 animate-bounce-slow hover:animate-none relative overflow-hidden"
+            >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               <span>Book Free Consultation</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
@@ -239,6 +252,9 @@ const Hero = () => {
           </div>
         </div>
       )}
+
+      {/* Consultation Form Modal */}
+      <ConsultationForm isOpen={isFormOpen} onClose={closeForm} />
     </section>
   );
 };
