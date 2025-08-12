@@ -1,7 +1,17 @@
-import React from 'react';
-import { ArrowRight, Shield, AlertTriangle, Phone } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, Shield, AlertTriangle, Phone, X } from 'lucide-react';
 
 const Hero = () => {
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+
+  const openVideo = () => {
+    setIsVideoOpen(true);
+  };
+
+  const closeVideo = () => {
+    setIsVideoOpen(false);
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28">
       {/* Background Video */}
@@ -57,7 +67,10 @@ const Hero = () => {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
             </button>
             
-            <button className="border-2 border-gray-600 hover:border-blue-400 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-500 hover:bg-blue-400/20 hover:shadow-lg hover:shadow-blue-400/25 flex items-center space-x-2 hover:scale-105 group">
+            <button 
+              onClick={openVideo}
+              className="border-2 border-gray-600 hover:border-blue-400 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-500 hover:bg-blue-400/20 hover:shadow-lg hover:shadow-blue-400/25 flex items-center space-x-2 hover:scale-105 group"
+            >
               <Shield className="w-5 h-5" />
               <span>Learn More</span>
             </button>
@@ -120,7 +133,7 @@ const Hero = () => {
 
       {/* Floating Phone Button */}
       <a
-        href="tel:+919779665056"
+        href="tel:+919056742781"
         className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 group"
         aria-label="Call us"
       >
@@ -133,6 +146,43 @@ const Hero = () => {
           <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
         </div>
       </a>
+
+      {/* Video Modal */}
+      {isVideoOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+          <div className="relative w-full max-w-4xl mx-4">
+            {/* Close Button */}
+            <button
+              onClick={closeVideo}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors duration-300 z-10"
+            >
+              <X className="w-8 h-8" />
+            </button>
+            
+            {/* Video Player */}
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
+              <video
+                autoPlay
+                controls
+                className="w-full h-full object-cover"
+              >
+                <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            
+            {/* Video Title */}
+            <div className="text-center mt-6">
+              <h3 className="text-2xl font-bold text-white mb-2">
+                Anti-Bribery Compliance Video
+              </h3>
+              <p className="text-gray-300">
+                Learn about the critical importance of anti-bribery compliance for your business
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
