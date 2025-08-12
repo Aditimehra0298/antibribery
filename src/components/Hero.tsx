@@ -3,13 +3,19 @@ import { ArrowRight, Shield, AlertTriangle, Phone, X } from 'lucide-react';
 
 const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const openVideo = () => {
     setIsVideoOpen(true);
+    setIsVideoLoading(true);
+    setVideoError(false);
   };
 
   const closeVideo = () => {
     setIsVideoOpen(false);
+    setIsVideoLoading(false);
+    setVideoError(false);
   };
 
   return (
@@ -161,14 +167,44 @@ const Hero = () => {
             
             {/* Video Player */}
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
-              <video
-                autoPlay
-                controls
-                className="w-full h-full object-cover"
-              >
-                <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              {isVideoLoading && (
+                <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-10">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+                  <p className="ml-4 text-white text-lg">Loading video...</p>
+                </div>
+              )}
+              {videoError && (
+                <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-10 text-white">
+                  <div className="text-6xl mb-4">🎥</div>
+                  <h3 className="text-xl font-bold mb-2">Video Loading Issue</h3>
+                  <p className="text-gray-300 mb-4">The video is temporarily unavailable.</p>
+                  <div className="space-y-2 text-sm text-gray-400">
+                    <p>• Please try again later</p>
+                    <p>• Check your internet connection</p>
+                    <p>• Contact us for direct assistance</p>
+                  </div>
+                </div>
+              )}
+              {!isVideoLoading && !videoError && (
+                <video
+                  autoPlay
+                  controls
+                  className="w-full h-full object-cover"
+                  onLoadStart={() => setIsVideoLoading(true)}
+                  onLoadedData={() => setIsVideoLoading(false)}
+                  onCanPlay={() => setIsVideoLoading(false)}
+                  onError={(e) => {
+                    const target = e.target as HTMLVideoElement;
+                    console.error('Video failed to load:', target.src);
+                    setVideoError(true);
+                    setIsVideoLoading(false);
+                  }}
+                >
+                  <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
+                  <source src="/198896-909564547.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
             </div>
             
             {/* Video Title */}
