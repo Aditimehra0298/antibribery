@@ -169,7 +169,7 @@ const Hero = () => {
       {/* Floating Phone Button */}
       <a
         href="tel:+919056742781"
-        className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 group"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group"
         aria-label="Call us"
       >
         {/* Pulsing Ring Effect */}
@@ -186,9 +186,9 @@ const Hero = () => {
         </div>
         
         {/* Enhanced Tooltip */}
-        <div className="absolute bottom-full left-0 mb-3 px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white text-sm rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-0 translate-y-2 whitespace-nowrap hidden sm:block shadow-xl border border-red-400/30">
+        <div className="absolute bottom-full right-0 mb-3 px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white text-sm rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-0 translate-y-2 whitespace-nowrap hidden sm:block shadow-xl border border-red-400/30">
           <span className="font-semibold">📞 Call Now</span>
-          <div className="absolute top-full left-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-red-600"></div>
+          <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-red-600"></div>
         </div>
       </a>
 
