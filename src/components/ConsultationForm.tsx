@@ -11,31 +11,11 @@ const ConsultationForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
     email: '',
     phone: '',
     companyName: '',
-    jobTitle: '',
-    industry: '',
     
-    // Company Details
-    companySize: '',
-    annualTurnover: '',
-    locations: '',
-    yearsInOperation: '',
-    
-    // Compliance Information
-    hasComplianceProgram: '',
-    currentComplianceStatus: '',
-    specificConcerns: '',
-    urgencyLevel: '',
-    
-    // Service Requirements
-    servicesNeeded: [],
-    timeline: '',
-    budget: '',
-    
-    // Additional Information
+    // Simple Consultation Details
+    consultationType: '',
     message: '',
-    howDidYouHear: '',
-    preferredContactMethod: '',
-    preferredContactTime: ''
+    preferredContactMethod: ''
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -67,7 +47,7 @@ const ConsultationForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
       
       // Convert data to FormData (this bypasses CORS issues)
       const formDataToSend = new FormData();
-      formDataToSend.append('formType', 'Comprehensive Consultation Request');
+      formDataToSend.append('formType', 'Simple Consultation Request');
       
       // Add all form fields
       Object.entries(data).forEach(([key, value]) => {
@@ -127,23 +107,9 @@ const ConsultationForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
       email: '',
       phone: '',
       companyName: '',
-      jobTitle: '',
-      industry: '',
-      companySize: '',
-      annualTurnover: '',
-      locations: '',
-      yearsInOperation: '',
-      hasComplianceProgram: '',
-      currentComplianceStatus: '',
-      specificConcerns: '',
-      urgencyLevel: '',
-      servicesNeeded: [],
-      timeline: '',
-      budget: '',
+      consultationType: '',
       message: '',
-      howDidYouHear: '',
-      preferredContactMethod: '',
-      preferredContactTime: ''
+      preferredContactMethod: ''
     });
     onClose();
   };
@@ -259,245 +225,42 @@ const ConsultationForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                 />
               </div>
               <div>
-                <label className="block text-white font-medium mb-2">Job Title</label>
+                <label className="block text-white font-medium mb-2">Company Name</label>
                 <input
                   type="text"
-                  value={formData.jobTitle}
-                  onChange={(e) => handleInputChange('jobTitle', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-colors"
-                  placeholder="e.g., CEO, Compliance Officer"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Company Information Section */}
-          <div className="bg-gray-800/30 rounded-2xl p-6">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</div>
-              Company Information
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-white font-medium mb-2">Company Name *</label>
-                <input
-                  type="text"
-                  required
                   value={formData.companyName}
                   onChange={(e) => handleInputChange('companyName', e.target.value)}
                   className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-colors"
                   placeholder="Your company name"
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Simple Consultation Details Section */}
+          <div className="bg-gray-800/30 rounded-2xl p-6">
+            <h3 className="text-xl font-bold text-white mb-6 flex items-center">
+              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</div>
+              Simple Consultation Details
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-white font-medium mb-2">Industry *</label>
+                <label className="block text-white font-medium mb-2">Consultation Type</label>
                 <select
-                  required
-                  value={formData.industry}
-                  onChange={(e) => handleInputChange('industry', e.target.value)}
+                  value={formData.consultationType}
+                  onChange={(e) => handleInputChange('consultationType', e.target.value)}
                   className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
                 >
-                  <option value="">Select industry</option>
-                  <option value="Manufacturing">Manufacturing</option>
-                  <option value="Technology">Technology</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Finance">Finance</option>
-                  <option value="Retail">Retail</option>
-                  <option value="Construction">Construction</option>
-                  <option value="Energy">Energy</option>
-                  <option value="Transportation">Transportation</option>
+                  <option value="">Select type</option>
+                  <option value="Compliance Assessment">Compliance Assessment</option>
+                  <option value="Risk Analysis">Risk Analysis</option>
+                  <option value="Policy Review">Policy Review</option>
+                  <option value="Audit Preparation">Audit Preparation</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
               <div>
-                <label className="block text-white font-medium mb-2">Company Size</label>
-                <select
-                  value={formData.companySize}
-                  onChange={(e) => handleInputChange('companySize', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select company size</option>
-                  <option value="1-50">1-50 employees</option>
-                  <option value="51-200">51-200 employees</option>
-                  <option value="201-1000">201-1000 employees</option>
-                  <option value="1001-5000">1001-5000 employees</option>
-                  <option value="5000+">5000+ employees</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-white font-medium mb-2">Annual Turnover *</label>
-                <select
-                  required
-                  value={formData.annualTurnover}
-                  onChange={(e) => handleInputChange('annualTurnover', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select turnover range</option>
-                  <option value="0-50Cr">₹0 - ₹50 Cr</option>
-                  <option value="50-100Cr">₹50 Cr - ₹100 Cr</option>
-                  <option value="100-500Cr">₹100 Cr - ₹500 Cr</option>
-                  <option value="500-1000Cr">₹500 Cr - ₹1000 Cr</option>
-                  <option value="1000Cr+">₹1000 Cr+</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-white font-medium mb-2">Operating Locations</label>
-                <input
-                  type="text"
-                  value={formData.locations}
-                  onChange={(e) => handleInputChange('locations', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-colors"
-                  placeholder="e.g., Mumbai, Delhi, Bangalore"
-                />
-              </div>
-              <div>
-                <label className="block text-white font-medium mb-2">Years in Operation</label>
-                <select
-                  value={formData.yearsInOperation}
-                  onChange={(e) => handleInputChange('yearsInOperation', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select years</option>
-                  <option value="0-2">0-2 years</option>
-                  <option value="3-5">3-5 years</option>
-                  <option value="6-10">6-10 years</option>
-                  <option value="11-20">11-20 years</option>
-                  <option value="20+">20+ years</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Compliance Information Section */}
-          <div className="bg-gray-800/30 rounded-2xl p-6">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</div>
-              Compliance Information
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-white font-medium mb-2">Do you have a compliance program?</label>
-                <select
-                  value={formData.hasComplianceProgram}
-                  onChange={(e) => handleInputChange('hasComplianceProgram', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select answer</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                  <option value="In Development">In Development</option>
-                  <option value="Unsure">Unsure</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-white font-medium mb-2">Current compliance status</label>
-                <select
-                  value={formData.currentComplianceStatus}
-                  onChange={(e) => handleInputChange('currentComplianceStatus', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select status</option>
-                  <option value="Fully Compliant">Fully Compliant</option>
-                  <option value="Mostly Compliant">Mostly Compliant</option>
-                  <option value="Partially Compliant">Partially Compliant</option>
-                  <option value="Non-Compliant">Non-Compliant</option>
-                  <option value="Unknown">Unknown</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-white font-medium mb-2">Urgency Level</label>
-                <select
-                  value={formData.urgencyLevel}
-                  onChange={(e) => handleInputChange('urgencyLevel', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select urgency</option>
-                  <option value="Immediate">Immediate (within 1 month)</option>
-                  <option value="High">High (within 3 months)</option>
-                  <option value="Medium">Medium (within 6 months)</option>
-                  <option value="Low">Low (within 1 year)</option>
-                  <option value="Planning">Just planning ahead</option>
-                </select>
-              </div>
-            </div>
-            <div className="mt-6">
-              <label className="block text-white font-medium mb-2">Specific compliance concerns or challenges</label>
-              <textarea
-                value={formData.specificConcerns}
-                onChange={(e) => handleInputChange('specificConcerns', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-colors resize-none"
-                placeholder="Describe your specific compliance concerns, challenges, or areas where you need assistance..."
-                rows={4}
-              />
-            </div>
-          </div>
-
-          {/* Service Requirements Section */}
-          <div className="bg-gray-800/30 rounded-2xl p-6">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</div>
-              Service Requirements
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-white font-medium mb-2">Timeline for implementation</label>
-                <select
-                  value={formData.timeline}
-                  onChange={(e) => handleInputChange('timeline', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select timeline</option>
-                  <option value="Immediate">Immediate</option>
-                  <option value="1-3 months">1-3 months</option>
-                  <option value="3-6 months">3-6 months</option>
-                  <option value="6-12 months">6-12 months</option>
-                  <option value="1+ years">1+ years</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-white font-medium mb-2">Budget range</label>
-                <select
-                  value={formData.budget}
-                  onChange={(e) => handleInputChange('budget', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select budget range</option>
-                  <option value="Under 1L">Under ₹1 Lakh</option>
-                  <option value="1-5L">₹1-5 Lakhs</option>
-                  <option value="5-10L">₹5-10 Lakhs</option>
-                  <option value="10-25L">₹10-25 Lakhs</option>
-                  <option value="25L+">₹25+ Lakhs</option>
-                  <option value="To be discussed">To be discussed</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Information Section */}
-          <div className="bg-gray-800/30 rounded-2xl p-6">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</div>
-              Additional Information
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-white font-medium mb-2">How did you hear about us?</label>
-                <select
-                  value={formData.howDidYouHear}
-                  onChange={(e) => handleInputChange('howDidYouHear', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select option</option>
-                  <option value="Google Search">Google Search</option>
-                  <option value="Social Media">Social Media</option>
-                  <option value="Referral">Referral</option>
-                  <option value="Advertisement">Advertisement</option>
-                  <option value="Conference/Event">Conference/Event</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-white font-medium mb-2">Preferred contact method</label>
+                <label className="block text-white font-medium mb-2">Preferred Contact Method</label>
                 <select
                   value={formData.preferredContactMethod}
                   onChange={(e) => handleInputChange('preferredContactMethod', e.target.value)}
@@ -508,20 +271,6 @@ const ConsultationForm = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                   <option value="Phone">Phone</option>
                   <option value="Video Call">Video Call</option>
                   <option value="In-Person">In-Person</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-white font-medium mb-2">Preferred contact time</label>
-                <select
-                  value={formData.preferredContactTime}
-                  onChange={(e) => handleInputChange('preferredContactTime', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none transition-colors"
-                >
-                  <option value="">Select time</option>
-                  <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
-                  <option value="Afternoon (12 PM - 3 PM)">Afternoon (12 PM - 3 PM)</option>
-                  <option value="Evening (3 PM - 6 PM)">Evening (3 PM - 6 PM)</option>
-                  <option value="Flexible">Flexible</option>
                 </select>
               </div>
             </div>
