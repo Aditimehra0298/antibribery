@@ -200,8 +200,8 @@ const Hero = () => {
                     setIsVideoLoading(false);
                   }}
                 >
-                  <source src="/anti-bribery-compliance-video.mp4" type="video/mp4" />
-                  <source src="/198896-909564547.mp4" type="video/mp4" />
+                  <source src="./anti-bribery-compliance-video.mp4" type="video/mp4" />
+                  <source src="./198896-909564547.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}
